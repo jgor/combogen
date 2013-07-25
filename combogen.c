@@ -1,4 +1,4 @@
-/* Combogen v0.3
+/* Combogen
  * Copyright 2006-2013 John Gordon <jgor@indiecom.org>
  */
 
