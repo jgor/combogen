@@ -22,7 +22,7 @@
 #define DEFAULT_COLUMNS 4
 
 int main(int argc, char **argv) {
-  int first, middle, last, columns, count, i, j;
+  int first[10], middle[10], last, columns, count, i, j;
 
   switch(argc-1) {
     case 0: 
@@ -52,15 +52,24 @@ int main(int argc, char **argv) {
 
   count = 0;
   for (i = 0; i < 10; ++i) {
-    first = (4 * i) + (last % 4);
+    first[i] = (4 * i) + (last % 4);
+  }
+
+  for (i = 0; i < 10; ++i) {
+    middle[i] = (first[i] + 2) % 40;
+  }
+
+  int skip = 0;
+  for (i = 0; i < 10; ++i) {
     for (j = 0; j < 10; ++j) {
-      middle = (first + 2) % 40;
- 
-      if (abs(last-first) <= 2 || abs(last-middle) <= 2) {
+      if (middle[j] == last || 
+          (40+middle[j]-2)%40 == last || (40+middle[j]-1)%40 == last ||
+          (40+middle[j]+1)%40 == last || (40+middle[j]+2)%40 == last) {
+        skip++;
         continue;
       }
 
-      printf("%02d-%02d-%02d  ", first, middle, last);
+      printf("%02d-%02d-%02d  ", first[i], middle[j], last);
       count++;
 
       if (count % columns == 0) {
