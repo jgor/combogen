@@ -1,5 +1,5 @@
-/* Combogen v0.2
- * Copyright 2006-2009 John Gordon <jgor@indiecom.org>
+/* Combogen v0.3
+ * Copyright 2006-2013 John Gordon <jgor@indiecom.org>
  */
 
 /*   This program is free software: you can redistribute it and/or modify
@@ -17,29 +17,59 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 
-int main(void) {
-  int lst, i, j;
-  int fst[10];
-  int mid[10];
-  printf("Last Digit: ");
-  scanf("%d", &lst);
-  if (lst < 0 || lst > 39) {
+#define DEFAULT_COLUMNS 4
+
+int main(int argc, char **argv) {
+  int first, middle, last, columns, count, i, j;
+
+  switch(argc-1) {
+    case 0: 
+      columns = DEFAULT_COLUMNS;
+      printf("Last Digit: ");
+      scanf("%d", &last);
+      break;
+    case 1:
+      last = atoi(argv[1]);
+      columns = DEFAULT_COLUMNS;
+      break;
+    case 2:
+      last = atoi(argv[1]);
+      columns = atoi(argv[2]);
+      break;
+    default:
+      fprintf(stderr, "Too many arguments.\n");
+      exit(EXIT_FAILURE);
+  }
+
+  if (last < 0 || last > 39) {
     printf("Last Digit must be 0-39.\n");
     return 1;
   }
-  for (i = 0; i < 10; ++i) {
-    fst[i] = (4 * i) + (lst % 4);
-    mid[i] = (fst[i] + 2) % 40;
-  }
+
   printf("Possible Combinations:\n");
+
+  count = 0;
   for (i = 0; i < 10; ++i) {
+    first = (4 * i) + (last % 4);
     for (j = 0; j < 10; ++j) {
-      printf("%02d-%02d-%02d  ", fst[i], mid[j], lst);
-      if (j == 4) printf("\n");
+      middle = (first + 2) % 40;
+ 
+      if (abs(last-first) <= 2 || abs(last-middle) <= 2) {
+        continue;
+      }
+
+      printf("%02d-%02d-%02d  ", first, middle, last);
+      count++;
+
+      if (count % columns == 0) {
+        printf("\n");
+      }
     }
-    printf("\n");
   }
+  printf("\n");
+
   return 0;
 }
 
