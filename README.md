@@ -25,7 +25,8 @@ $ make
 
 
 USAGE:
-Run combogen from the command line. It will prompt for you to input the third
+./combogen [last_digit [number_of_columns]]
+Run combogen from the command line. If there are no arguments it will prompt for you to input the third
 digit of the combination:
 
 $ ./combogen
